@@ -7,19 +7,28 @@ from MySQLdb.cursors import DictCursor
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import MySQLdb
 from dotenv import load_dotenv
-
+from flask_mysqldb import MySQL
+from urllib.parse import urlparse
 # Initialize Flask application
-load_dotenv('sql.env')
+
 app = Flask(__name__)
 
 app.secret_key = os.getenv('SECRET_KEY')
 
 
+
+# Parse the JawsDB URL from the environment variable
+jawsdb_url = urlparse(os.getenv('JAWSDB_URL'))
+username = jawsdb_url.username
+password = jawsdb_url.password
+hostname = jawsdb_url.hostname
+database = jawsdb_url.path[1:]  # Exclude the leading forward slash
+
 # Configure MySQL database connection
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
-app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
-app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
-app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
+app.config['MYSQL_HOST'] = hostname
+app.config['MYSQL_USER'] = username
+app.config['MYSQL_PASSWORD'] = password
+app.config['MYSQL_DB'] = database
 mysql = MySQL(app)
 
 
