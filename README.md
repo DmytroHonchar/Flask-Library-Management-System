@@ -93,7 +93,17 @@ After creating these tables, your database will be set up to store and manage th
 
 ---
 
+## User Roles
 
+The `users` table includes a `role` field to define user roles within the application. To assign an admin role to a user, you need to manually update the `role` field in the `users` table through MySQL outside of the application.
+
+```sql
+UPDATE users SET role = 'admin' WHERE id = [user_id];
+```
+
+Replace `[user_id]` with the actual ID of the user you want to grant admin privileges.
+
+---
 ### Running the Application
 
 1. Initialize your MySQL database with the necessary tables.
