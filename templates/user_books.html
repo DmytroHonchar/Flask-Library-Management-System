@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Books</title>
+</head>
+<body>
+    <h1>Your Book Collection</h1>
+
+    <!-- Check if the user has any books -->
+    {% if books %}
+    <ul>
+        {% for book in books %}
+            <li>
+                {{ book.book_name }} by {{ book.author }} - Quantity: {{ book.quantity }}
+                <!-- Form for removing a book from the profile -->
+                <form method="post" action="{{ url_for('delete_book_from_profile') }}">
+                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                    <input type="number" name="quantity_to_remove" min="1" max="{{ book.quantity }}" value="1">
+                    <input type="submit" value="Remove Book">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You do not have any books in your collection.</p>
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+    <a href="{{ url_for('user') }}">Back to Dashboard</a>
+</body>
+</html>

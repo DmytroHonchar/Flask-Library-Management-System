@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration</title>
+</head>
+<body>
+    <h1>Registration system</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(category_filter=["regi", "info"]) %}
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+    <!-- Registration Form -->
+    <form method="post" action="/registration">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <p>Do you have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
+</body>
+</html>

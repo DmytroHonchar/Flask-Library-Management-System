@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Details</title>
+</head>
+<body>
+    <h1>Book Details</h1>
+    <div>
+        <p>Title: {{ book.book_name }}</p>
+        <p>Author: {{ book.author }}</p>
+        <p>Amount: {{ book.amount }}</p>
+        <p>Available for Exchange: {{ 'Yes' if book.for_exchange else 'No' }}</p>
+    </div>
+
+    <!-- If you're an admin, show the forms for updating and deleting book details -->
+    {% if current_user.is_admin() %}
+        <h2>Admin can update info about the book here</h2>
+        <form method="post" action="{{ url_for('update_book', book_id=book.id) }}" enctype="multipart/form-data">
+            Book Name: <input type="text" name="book_name" value="{{ book.book_name }}"><br>
+            Author: <input type="text" name="author" value="{{ book.author }}"><br>
+            Amount: <input type="number" name="amount" min="0" value="{{ book.amount }}"><br>
+            Available for Exchange: <input type="checkbox" name="for_exchange" {{ 'checked' if book.for_exchange }}><br>
+            <input type="submit" value="Update Book">
+        </form>
+
+
+<!-- Display users who have this book -->
+<h3>Users Who Have This Book</h3>
+{% if user_books %}
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Copies</th>
+        </tr>
+        {% for user_book in user_books %}
+        <tr>
+            <td>{{ user_book.username }}</td>
+            <td>{{ user_book.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No users currently have this book.</p>
+{% endif %}
+
+
+{% with messages = get_flashed_messages(category_filter=["success", "error"]) %}
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<br>
+<a href="{{ url_for('addUser') }}">Come back to Admin Dashboard</a>
+<br><br>
+
+<!-- Delete book -->
+
+<form method="post" action="{{ url_for('delete_book', book_id=book.id) }}">
+    <input type="submit" value="Delete This Book">
+</form>
+
+{% endif %}
+
+</body>
+</html>

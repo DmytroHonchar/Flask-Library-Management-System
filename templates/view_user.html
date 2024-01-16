@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+</head>
+<body>
+    
+    <h1>User Details</h1>
+    
+    <div>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Name: {{ user.first_name }} {{ user.second_name }}</p>
+        <p>DOB: {{ user.dob }}</p>
+        <p>Address: {{ user.address }}</p>
+        <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) if user.photo_filename else '' }}" alt="User Photo" width="100px">
+    </div>
+    
+    <!-- Delete photo -->
+    <form method="post" action="{{ url_for('delete_user_photo', user_id=user.id) }}">
+        <input type="submit" value="Delete Photo">
+    </form>
+    <br>
+
+    <a href="{{ url_for('addUser') }}">Come back to Admin Dashboard</a>
+    
+    <h2>Admin you can update info about user here</h2>
+    <form method="post" action="{{ url_for('update_user', user_id=user.id) }}" enctype="multipart/form-data">
+        First Name: <input type="text" name="first_name" ><br>
+        Second Name: <input type="text" name="second_name"><br>
+        Date of Birth: <input type="date" name="dob"><br>
+        Address: <input type="text" name="address"><br>
+        Photo: <input type="file" name="photo"><br><br>
+        New Username: <input type="text" name="username"><br>
+        New Email: <input type="email" id="email" name="email"><br>
+        New Password: <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Submit">
+    </form>
+  <!-- Check if the user has books -->
+  {% if books %}
+  <h2>Books in User's Profile:</h2>
+  <ul>
+      {% for book in books %}
+          <li>{{ book.book_name }} by {{ book.author }} (Quantity: {{ book.quantity }})</li>
+      {% endfor %}
+  </ul>
+{% else %}
+  <p>User does not have any books in their profile.</p>
+{% endif %}
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<p>Ban Status: {% if user.is_banned %} Banned {% else %} Not Banned {% endif %}</p>
+
+<br><br>
+        <!-- Ban User Button -->
+        <form method="post" action="{{ url_for('ban_user', user_id=user.id) }}">
+            <input type="submit" value="Ban This User">
+        </form>
+        <br><br>
+        <!-- Unban User Button -->
+        <form method="post" action="{{ url_for('unban_user', user_id=user.id) }}">
+            <input type="submit" value="Unban This User">
+        </form>
+    <br><br>
+
+<!-- Delete user -->
+    <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return finalConfirmation();">
+        <input type="hidden" name="delete_account" value="true">
+        <p>Press yes for deleting account</p>
+        <input type="radio" id="confirm_yes" name="confirm_delete" value="yes">
+        <label for="confirm_yes">Yes</label><br>
+        <input type="radio" id="confirm_no" name="confirm_delete" value="no" checked>
+        <label for="confirm_no">No</label><br><br>
+        <button type="submit">Delete this Account</button>
+    </form>
+    
+    <script>
+    function finalConfirmation() {
+        var confirmYes = document.getElementById('confirm_yes').checked;
+        if (confirmYes) {
+            return confirm('Are you really sure you want to delete your account? This action cannot be undone.');
+        }
+        return true;
+    }
+    </script>
+    
+
+</body>
+</html>
