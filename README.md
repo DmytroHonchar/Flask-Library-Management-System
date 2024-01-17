@@ -92,6 +92,30 @@ CREATE TABLE users (
 After creating these tables, your database will be set up to store and manage the data for the Flask Library Management System.
 
 ---
+Heroku Deployment
+The Flask Library Management System can be deployed to Heroku. If you are deploying it to Heroku, make sure to set up the Heroku Postgres add-on and set the DATABASE_URL environment variable.
+
+Additionally, you can parse the JAWSDB_URL environment variable to access the database details provided by Heroku. In your app.py, you can include the following code to parse the JawsDB URL:
+
+# Parse the JawsDB URL from the environment variable
+jawsdb_url = urlparse(os.getenv('JAWSDB_URL'))
+username = jawsdb_url.username
+password = jawsdb_url.password
+hostname = jawsdb_url.hostname
+database = jawsdb_url.path[1:]  # Exclude the leading forward slash
+port = jawsdb_url.port or 3306
+
+This will allow your Flask application to use the JawsDB database details provided by Heroku when running in a Heroku environment.
+
+ Import Tables From Your Local Database
+If you already have an existing MySQL database with the required tables, you can export the schema and data from your local database and import it into the database you plan to use for this application. You can use tools like mysqldump or export data using a database management tool like phpMyAdmin.
+
+Ensure that your local database schema matches the tables and fields described above. Importing the tables from your local database will help preserve your existing data when running the Flask Library Management System.
+
+Once you have created or imported the tables into your MySQL database, your database will be set up to store and manage the data for the Flask Library Management System.
+
+Heroku Deployment
+When deploying the application to Heroku, make sure to set up the Heroku Postgres add-on and set the DATABASE_URL environment variable as mentioned earlier. Additionally, if you are migrating from a local MySQL database to Heroku's PostgreSQL, you may need to adjust the database schema accordingly.
 
 ## User Roles
 
@@ -109,5 +133,28 @@ Replace `[user_id]` with the actual ID of the user you want to grant admin privi
 1. Initialize your MySQL database with the necessary tables.
 2. Run the Flask application:
    ```
-   flask run
+   flask runRunning the Application
+Before you can run the Flask Library Management System, ensure that you have initialized your MySQL database with the necessary tables. You can either create these tables using the provided SQL commands or import them from your local database, as described in the "Database Setup" section above.
+
+Once your database is set up, follow these steps to run the application:
+
+Open a terminal or command prompt.
+
+Navigate to the project directory where your Flask application code is located.
+
+Create and activate a virtual environment (if not already done):
+
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+Install the required packages by running the following command:
+
+pip install -r requirements.txt
+Create a .env file based on the .env.example provided in the project directory, and fill in your MySQL database details and secret key.
+
+Once your virtual environment is activated and the packages are installed, you can start the Flask application:
+
+flask run
+The application will start, and you will see output indicating the local development server's address (usually http://127.0.0.1:5000/).
+
+Open a web browser and navigate to the provided address to access the Flask Library Management System.
    ```
