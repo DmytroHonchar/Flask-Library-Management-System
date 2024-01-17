@@ -133,7 +133,9 @@ Replace `[user_id]` with the actual ID of the user you want to grant admin privi
 1. Initialize your MySQL database with the necessary tables.
 2. Run the Flask application:
    ```
-   flask runRunning the Application
+   flask run
+
+Running the Application
 Before you can run the Flask Library Management System, ensure that you have initialized your MySQL database with the necessary tables. You can either create these tables using the provided SQL commands or import them from your local database, as described in the "Database Setup" section above.
 
 Once your database is set up, follow these steps to run the application:
