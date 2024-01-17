@@ -152,8 +152,9 @@ pip install -r requirements.txt
 Create a .env file based on the .env.example provided in the project directory, and fill in your MySQL database details and secret key.
 
 Once your virtual environment is activated and the packages are installed, you can start the Flask application:
-
+```
 flask run
+```
 The application will start, and you will see output indicating the local development server's address (usually http://127.0.0.1:5000/).
 
 Open a web browser and navigate to the provided address to access the Flask Library Management System.
