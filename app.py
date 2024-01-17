@@ -23,12 +23,14 @@ username = jawsdb_url.username
 password = jawsdb_url.password
 hostname = jawsdb_url.hostname
 database = jawsdb_url.path[1:]  # Exclude the leading forward slash
+port = jawsdb_url.port or 3306 
 
 # Configure MySQL database connection
 app.config['MYSQL_HOST'] = hostname
 app.config['MYSQL_USER'] = username
 app.config['MYSQL_PASSWORD'] = password
 app.config['MYSQL_DB'] = database
+app.config['MYSQL_PORT'] = port 
 mysql = MySQL(app)
 
 
