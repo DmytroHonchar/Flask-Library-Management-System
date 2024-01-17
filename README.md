@@ -133,5 +133,28 @@ Replace `[user_id]` with the actual ID of the user you want to grant admin privi
 1. Initialize your MySQL database with the necessary tables.
 2. Run the Flask application:
    ```
-   flask run
+   flask runRunning the Application
+Before you can run the Flask Library Management System, ensure that you have initialized your MySQL database with the necessary tables. You can either create these tables using the provided SQL commands or import them from your local database, as described in the "Database Setup" section above.
+
+Once your database is set up, follow these steps to run the application:
+
+Open a terminal or command prompt.
+
+Navigate to the project directory where your Flask application code is located.
+
+Create and activate a virtual environment (if not already done):
+
+python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+Install the required packages by running the following command:
+
+pip install -r requirements.txt
+Create a .env file based on the .env.example provided in the project directory, and fill in your MySQL database details and secret key.
+
+Once your virtual environment is activated and the packages are installed, you can start the Flask application:
+
+flask run
+The application will start, and you will see output indicating the local development server's address (usually http://127.0.0.1:5000/).
+
+Open a web browser and navigate to the provided address to access the Flask Library Management System.
    ```
