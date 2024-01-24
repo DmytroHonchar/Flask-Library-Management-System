@@ -1,0 +1,168 @@
+body{
+    background-color: black;
+    color: white;
+    background-image: url(/static/pictures/pexels-luis-zheji-1662277.jpg);
+    background-size: cover;
+}
+
+h2{
+    font-family: Bebas Neue;
+    font-size: 50px;
+    text-align: center;
+}
+
+.one{
+    text-align: center;
+}
+a{
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bebas Neue';
+    width: max-content;
+    font-size: 30px;
+    text-decoration: none;
+    color:white;
+    transition: transform 0.3s ease-in-out;
+}
+
+a:hover{
+    color: rgb(241, 241, 121);
+}
+
+form{
+    color: white;
+    font-family: Cinzel;
+    font-size: 20px;
+    align-items: start;
+}
+
+.twoelements {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.oneline{
+    display: flex;
+    flex-direction: column;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="file"] {
+    margin: 10px 0;
+    padding: 10px;
+    width: 300px;
+    font-family: Playfair Display;
+}
+
+input[type="submit"] {
+    font-family: 'Bebas Neue';
+    margin: 30px auto;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    font-size: 30px;
+    width: max-content;
+    transition: background-color 0.8s ease-in-out;
+}
+
+#submit{
+    padding: 10px 30px;
+}
+
+.submit{
+    align-self: center;
+    text-align: center;
+}
+
+input[type="submit"]:hover{
+    background-color: #ee6e12;
+}
+
+
+.line{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: -2px;
+    margin-right: 148px;
+}
+
+input::file-selector-button{
+    font-family: cinzel;
+}
+
+input[type = "file"]{
+    font-family: cinzel;
+}
+
+label {
+    font-family: Cinzel, sans-serif; 
+    transition: color 0.8s ease-in-out;
+}
+
+label:hover{
+    color: #ee6e12;
+}
+
+button{
+    font-family: 'Bebas Neue';
+    margin: 30px auto;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    font-size: 20px;
+    width: max-content;
+    transition: background-color 0.8s ease-in-out;
+}
+
+button:hover{
+    background-color: rgb(193, 47, 47);
+}
+
+
+
+/* -----------------------------Font Styles -------------------------------------*/
+@font-face {
+    font-family: 'Agbalumo';
+    src: url('/static/font-family/Agbalumo-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    src: url('/static/font-family/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bebas Neue';
+    src: url('/static/font-family/BebasNeue-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Caveat';
+    src: url('/static/font-family/Caveat-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'KdamThmor';
+    src: url('/static/font-family/KdamThmorPro-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Cinzqel';
+    src: url('/static/font-family/Cinzel-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SpecialElite';
+    src: url('/static/font-family/SpecialElite-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('/static/font-family/LuckiestGuy-Regular.ttf') format('truetype');
+}

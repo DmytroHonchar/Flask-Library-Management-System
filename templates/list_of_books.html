@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Books</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='list_of_users.css') }}">
+    <h1>List of Books</h1>
+    <div class="one">
+        <a href="{{ url_for('addUser') }}">Back to Admin Dashboard</a>
+        </div>
+
+    {% for book in books %}
+    <div class="list">
+    <p>Name: {{ book.book_name }}</p>
+    <p>Author: {{ book.author }}</p>
+    <a href="{{ url_for('view_book', book_id=book.id) }}">View Details</a>
+    </div>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,42 @@
+body{
+    background-color: black;
+    color: white;
+    background-image: url(/static/pictures/pexels-luis-zheji-1662277.jpg);
+    background-size: cover;
+}
+
+h2{
+    font-family: Bebas Neue;
+    font-size: 50px;
+    text-align: center;
+}
+
+a{
+    border: none;
+    border-radius: 15px;
+    margin: 5px 0;
+    font-family: 'Bebas Neue';
+    width: max-content;
+    font-size: 30px;
+    text-decoration: none;
+    color:white;
+    transition: transform 0.3s ease-in-out;
+}
+
+a:hover{
+    color: rgb(241, 241, 121);
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flash-message{
+    font-family: Cinzel;
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+}

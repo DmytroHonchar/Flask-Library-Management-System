@@ -5,8 +5,11 @@
     <title>Your Books</title>
 </head>
 <body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='user_books.css') }}">
     <h1>Your Book Collection</h1>
-
+    <div class="one">
+        <a href="{{ url_for('listbooks') }}">Back to the List of books </a>
+    </div>
     <!-- Check if the user has any books -->
     {% if books %}
     <ul>
@@ -17,7 +20,7 @@
                 <form method="post" action="{{ url_for('delete_book_from_profile') }}">
                     <input type="hidden" name="book_id" value="{{ book.id }}">
                     <input type="number" name="quantity_to_remove" min="1" max="{{ book.quantity }}" value="1">
-                    <input type="submit" value="Remove Book">
+                    <button type="submit">Remove</button>
                 </form>
             </li>
         {% endfor %}
@@ -30,13 +33,11 @@
     {% if messages %}
         <div>
             {% for message in messages %}
-                <p>{{ message }}</p>
+            <div class="flash-message">{{ message }}</div>
             {% endfor %}
         </div>
     {% endif %}
 {% endwith %}
 
-
-    <a href="{{ url_for('user') }}">Back to Dashboard</a>
 </body>
 </html>

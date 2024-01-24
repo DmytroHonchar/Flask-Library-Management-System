@@ -1,0 +1,103 @@
+body{
+    background-color: black;
+    color: white;
+    background-image: url(/static/pictures/pexels-luis-zheji-1662277.jpg);
+    background-size: cover;
+}
+
+h1 {
+    font-family: Bebas Neue;
+    font-size: 50px;
+    margin: 20px;
+    text-align: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-family: Cinzel;
+    font-size: 20px;
+    align-items: center;
+}
+
+
+
+input[type="text"]{
+    margin: 10px 0;
+    padding: 10px;
+    width: 300px;
+    font-family: Playfair Display;
+    font-size: 25px;
+}
+
+input[type="number"] {
+    margin: 10px 0;
+    padding: 5px 10px;
+    width: 300px;
+    font-family: Playfair Display;
+    font-size: 30px;
+    text-align: center;
+}
+
+input[type="submit"] {
+    font-family: 'Bebas Neue';
+    margin: 30px auto;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    font-size: 30px;
+    width: max-content;
+    transition: background-color 0.8s ease-in-out;
+}
+
+input[type="submit"]:hover{
+    background-color: #ee6e12;
+}
+
+input[type="submit"].delete-button:hover {
+    background-color: #ff0000; /* Red color on hover */
+}
+
+a{
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bebas Neue';
+    width: max-content;
+    font-size: 30px;
+    text-decoration: none;
+    color:white;
+    transition: color 0.8s ease-in-out;
+}
+
+a:hover{
+    color: rgb(241, 241, 121);
+}
+
+.one{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.custom-checkbox {
+    background-color: #fff;
+    margin: 5px;
+    font-size: 10px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    transition: background-color 0.3s, border-color 0.3s;
+    cursor: pointer;
+}
+
+.custom-checkbox:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.custom-checkbox:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}

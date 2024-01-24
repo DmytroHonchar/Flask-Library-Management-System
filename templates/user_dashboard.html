@@ -3,115 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboard.css') }}">
 </head>
 <body>
-    <!-- Section with user info  -->
-    <h1>Welcome, {{ user.username }}!</h1>
-    <div>
-        <p>Name: {{ user.first_name }} {{ user.second_name }}</p>
-        <p>DOB: {{ user.dob }}</p>
-        <p>Address: {{ user.address }}</p>
-        <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) if user.photo_filename else '' }}" alt="User Photo" width="100px">
-    </div>
-    
-    <!-- Form for deleting photo -->
-    <form method="post" action="/delete_photo">
-        <input type="submit" value="Delete Photo">
-    </form>
-    <br>
+    <!-- Header Section -->
+    <header>
+        <h1 class="top">Welcome to your profile, {{ user.username }}!</h1>
+    </header>
 
-    <!-- Admin link for dashboard -->
-{% if admin %}
+    <!-- Main Content Section -->
+    <div class="page">
+        <div class="twoelements">
+            <!-- User Photo -->
+            <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) if user.photo_filename else '' }}" alt="Provide your photo" width="300px">
 
-    <a href="{{ url_for('addUser') }}">Admin Dashboard</a>
+            <!-- User Profile Information -->
+            <div class="profile_info">
+                <p>
+                    {% if user.first_name and user.second_name %}
+                        Name: {{ user.first_name }} {{ user.second_name }}
+                    {% else %}
+                        Name: Provide your name
+                    {% endif %}
+                </p>
+                
+                <p>
+                    {% if user.dob %}
+                        DOB: {{ user.dob.strftime('%d-%m-%Y') }}
+                    {% else %}
+                        DOB: Provide your date of birth
+                    {% endif %}
+                </p>
+                
+                <p>
+                    {% if user.address %}
+                        Address: {{ user.address }}
+                    {% else %}
+                        Address: Provide your address
+                    {% endif %}
+                </p>
 
-{% endif %}
-
-
-    <!-- Section where we can update our info -->
-    <h2>Please provide or update your data for your profile</h2>
-    <form method="post" action="/user" enctype="multipart/form-data">
-        First Name: <input type="text" name="first_name" ><br>
-        Second Name: <input type="text" name="second_name"><br>
-        Date of Birth: <input type="date" name="dob"><br>
-        Address: <input type="text" name="address"><br>
-        Photo: <input type="file" name="photo"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-<br>
-    <form method="post" action="/user" enctype="multipart/form-data">
-        New Username: <input type="text" name="username"><br>
-        New Email: <input type="email" id="email" name="email"><br>
-        New Password: <input type="password" id="password" name="password"><br>
-        <input type="submit" value="Submit">
-    </form>
-
-
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div>
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
-
-<br><br>
-
-<!-- Section where we can see list of available books and add them -->
-<form method="post" action="{{ url_for('add_book_to_profile') }}">
-    <ul>
-        <!-- Loop through available_books list -->
-        {% for book in available_books %}
-            <li>
-                {{ book.book_name }} by {{book.author}}
-                <input type="number" name="quantity_{{ book.id }}" min="1" max="{{ book.amount }}" value="1">
-                <button type="submit" name="book_id" value="{{ book.id }}">Add</button>
-                <br>
-                Available: {{ book.amount }}
-                <br>
-                <!-- Display exchange status -->
-                {% if book.for_exchange %}
-                    <span></span>
-                {% else %}
-                    <span style="color: red;">The book is blocked by admin for revision</span>
+                <!-- Navigation Links -->
+                <a href="{{ url_for('edit') }}">Edit profile</a>
+                <a href="{{ url_for('listbooks') }}">List of books</a>
+                
+                {% if admin %}
+                    <a href="{{ url_for('addUser') }}">Admin Dashboard</a>
                 {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-</form>
-<br><br>
-    
-<!-- Link to books which were added to profile -->
-<a href="{{ url_for('user_books') }}">View Your Books</a>
 
-<br><br>
-<!-- Account Deletion Form -->
-<form method="post" action="{{ url_for('user') }}" onsubmit="return finalConfirmation();">
-    <input type="hidden" name="delete_account" value="true">
-    <p>Press yes for deleting account</p>
-    <input type="radio" id="confirm_yes" name="confirm_delete" value="yes">
-    <label for="confirm_yes">Yes</label><br>
-    <input type="radio" id="confirm_no" name="confirm_delete" value="no" checked>
-    <label for="confirm_no">No</label><br>
-    <button type="submit">Delete My Account</button>
-</form>
+                <a class="button" href="{{ url_for('logout') }}">Log out</a>
+            </div>
+        </div>
+    </div>
 
-<script>
-function finalConfirmation() {
-    var confirmYes = document.getElementById('confirm_yes').checked;
-    if (confirmYes) {
-        return confirm('Are you really sure you want to delete your account? This action cannot be undone.');
-    }
-    return true;
-}
-</script>
-
-
-<br>
-    <!-- Log out option -->
-    <a href="{{ url_for('logout') }}">Log out</a>
+    <!-- Flash Messages Section -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>

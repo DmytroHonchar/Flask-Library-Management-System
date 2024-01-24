@@ -1,0 +1,113 @@
+body{
+    background-color: black;
+    color: white;
+    background-image: url(/static/pictures/pexels-josh-hild-4256852.jpg);
+    background-size: cover;
+}
+
+h1 {
+    font-family: Bebas Neue;
+    font-size: 50px;
+    margin: 20px;
+    text-align: center;
+}
+
+form{
+    color: white;
+    font-family: Cinzel;
+    font-size: 20px;
+    margin: 20px;
+    align-items: start;
+}
+
+li{
+    margin: 15px 0;
+    font-family: Cinzel;
+}
+
+a{
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bebas Neue';
+    width: max-content;
+    font-size: 30px;
+    text-decoration: none;
+    color:white;
+    transition: transform 0.3s ease-in-out;
+}
+
+a:hover{
+    color: rgb(241, 241, 121);
+}
+
+input {
+    border-radius: 10px;
+    border: none;
+    padding: 2px;
+    font-family: 'Bebas Neue';
+    font-size: 16px;
+    text-align: end;
+}
+
+
+button{
+    font-family: 'Cinzqel';
+    border-radius: 15px;
+    border: none;
+    font-size: 15px;
+    width: fit-content;
+    transition: background-color 0.8s ease-in-out;
+}
+
+button:hover{
+    background-color: #ee6e12;
+}
+
+.one{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+/* -----------------------------Font Styles -------------------------------------*/
+@font-face {
+    font-family: 'Agbalumo';
+    src: url('/static/font-family/Agbalumo-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    src: url('/static/font-family/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bebas Neue';
+    src: url('/static/font-family/BebasNeue-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Caveat';
+    src: url('/static/font-family/Caveat-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'KdamThmor';
+    src: url('/static/font-family/KdamThmorPro-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Cinzqel';
+    src: url('/static/font-family/Cinzel-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SpecialElite';
+    src: url('/static/font-family/SpecialElite-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('/static/font-family/LuckiestGuy-Regular.ttf') format('truetype');
+}
