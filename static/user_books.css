@@ -71,6 +71,14 @@ a:hover{
     font-weight: bold;
 }
 
+p{
+    font-family: Cinzel;
+    color: white;
+    text-align: center;
+    margin-top: 25px;
+}
+
+
 .one{
     text-align: center;
 }
