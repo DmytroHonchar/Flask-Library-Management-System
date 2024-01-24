@@ -40,7 +40,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
-
 # Setup for file uploads
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -216,7 +215,24 @@ def user():
     else:
         flash('User information not found.')
         return redirect(url_for('register'))
-    
+
+
+
+
+@app.route("/edit", methods=['GET', 'POST'])
+@login_required
+def edit():
+    return render_template("edit_profile.html")
+
+
+
+@app.route("/addUB", methods=['GET', 'POST'])
+@login_required
+def addUB():
+    return render_template("add_user_book.html")
+
+
+
 
 # Route to delete user's photo
 @app.route("/delete_photo", methods=["POST"])
@@ -322,6 +338,60 @@ def addUser():
     cur.close()
 
     return render_template("admin_dashboard.html", users=users, books=books)
+
+# Admin routes too
+@app.route("/list_of_users", methods=['GET', 'POST'])
+def LU():
+    cur = mysql.connection.cursor(cursorclass=DictCursor)
+    if not current_user.is_authenticated or not current_user.is_admin():
+        flash("Unauthorized access.", "warning")
+        return redirect(url_for('login'))
+    
+    cur.execute("SELECT * FROM users")
+    users = cur.fetchall()
+    cur.close()
+    
+    return render_template("list_of_users.html", users=users)
+
+
+
+@app.route("/Update/<int:user_id>", methods=['GET', 'POST'])
+def Update(user_id):
+    if not current_user.is_authenticated or not current_user.is_admin():
+        flash("Unauthorized access.", "warning")
+        return redirect(url_for('login'))
+
+    cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+    # Execute a query to fetch the user data by user_id
+    cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    user_data = cur.fetchone()
+
+    # Check if user data is found
+    if user_data:
+        return render_template("update_info.html", user=user_data, user_id=user_id)
+    else:
+        flash("User not found.")
+        return redirect(url_for('addUser'))
+    
+
+
+@app.route("/deleting/<int:user_id>", methods=['GET', 'POST'])
+@login_required
+def deleting(user_id):
+    if not current_user.is_authenticated or not current_user.is_admin():
+        flash("Unauthorized access.", "warning")
+        return redirect(url_for('login'))
+
+    cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+    # Execute a query to fetch the user data by user_id
+    cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    user = cur.fetchone()
+    cur.close()
+
+    return render_template("delete.html", user=user)
+
 
 # ---------------------- dispaly, update, delete users (Admin)-----------------------------------
 
@@ -437,7 +507,7 @@ def delete_user(user_id):
     if not current_user.is_admin():
         flash("Unauthorized access.", "warning")
         return redirect(url_for('login'))
-    
+
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
     cur.execute("SELECT COUNT(*) as book_count FROM user_books WHERE user_id = %s", (user_id,))
     book_count_result = cur.fetchone()
@@ -452,12 +522,88 @@ def delete_user(user_id):
     cur.close()
     flash('User account has been deleted.')
 
-    # Redirect to an admin page 
+    # Redirect to an admin page
     return redirect(url_for('addUser'))
 
 
-
 # ------------for books----------------------------------
+
+@app.route("/listbooks", methods=['GET', 'POST'])
+@login_required
+def listbooks():
+
+    user_id = current_user.get_id()
+    cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    user_data = cur.fetchone()
+
+    
+     # Fetch available books from the database, including exchange status
+    cur.execute("SELECT id, book_name, author , amount, for_exchange FROM books WHERE amount > 0")
+    available_books = cur.fetchall()
+    cur.close()
+
+
+    return render_template("list_book_users.html",user=user_data, available_books=available_books )
+
+@app.route("/list_of_books", methods=['GET', 'POST'])
+def LB():
+    cur = mysql.connection.cursor(cursorclass=DictCursor)
+    if not current_user.is_authenticated or not current_user.is_admin():
+        flash("Unauthorized access.", "warning")
+        return redirect(url_for('login'))
+    
+    cur.execute("SELECT * FROM books")
+    books = cur.fetchall()
+    cur.close()
+    
+    return render_template("list_of_books.html", books=books)
+
+
+@app.route("/taken_books/<int:user_id>", methods=['GET', 'POST'])
+@login_required
+def taken_books(user_id):
+    if not current_user.is_authenticated or not current_user.is_admin():
+        flash("Unauthorized access.", "warning")
+        return redirect(url_for('login'))
+
+    cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+    # Execute a query to fetch the user data by user_id
+    cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    user = cur.fetchone()
+
+    # Execute a query to fetch the books associated with the user
+    cur.execute("""
+        SELECT b.book_name, b.author, ub.quantity
+        FROM user_books ub
+        JOIN books b ON ub.book_id = b.id
+        WHERE ub.user_id = %s
+    """, (user_id,))
+    
+    books = cur.fetchall()
+    cur.close()
+
+    return render_template("taken_books.html", user=user, books=books)
+
+@app.route("/edit_book/<int:book_id>", methods=["GET"])
+@login_required
+def edit_book(book_id):
+    if not current_user.is_admin():
+        flash("Unauthorized access.", "warning")
+        return redirect(url_for('login'))
+    
+    cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM books WHERE id = %s", [book_id])
+    book = cur.fetchone()
+    cur.close()
+
+    if book:
+        return render_template('update_book.html', book=book)
+    else:
+        flash("Book not found.", "error")
+        return redirect(url_for('addUser'))  
+
 
 @app.route("/book/<int:book_id>")
 def view_book(book_id):
@@ -674,7 +820,7 @@ def delete_book_from_profile():
     cur.close()
     return redirect(url_for('user_books'))
 
-# --------------------- Ban section_--------------------------------
+# --------------------- Ban section--------------------------------
 
 @app.route("/ban_user/<int:user_id>", methods=['POST'])
 @login_required
