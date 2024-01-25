@@ -18,11 +18,23 @@
         <p>Email:</p>
         <p>{{ user.email }}</p>
         <p>Name:</p>
-        <p>{{ user.first_name }} {{ user.second_name }}</p>
+        <p>  {% if user.first_name and user.second_name %}
+            {{ user.first_name }} {{ user.second_name }}
+        {% else %}
+            Provide name
+        {% endif %}</p>
         <p>DOB:</p>
-        <p>{{ user.dob }}</p>
+        <p>{% if user.dob %}
+            {{ user.dob.strftime('%d-%m-%Y') }}
+        {% else %}
+            Provide date of birth
+        {% endif %}</p>
         <p>Address:</p>
-        <p>{{ user.address }}</p>
+        <p> {% if user.address %}
+            {{ user.address }}
+        {% else %}
+           Provide address
+        {% endif %}</p>
        
    
     

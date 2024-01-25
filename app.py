@@ -9,6 +9,7 @@ import MySQLdb
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 from urllib.parse import urlparse
+from datetime import datetime
 # Initialize Flask application
 
 app = Flask(__name__)
@@ -269,28 +270,36 @@ def addBook():
     if not current_user.is_admin():
         flash("Unauthorized access.", "warning")
         return redirect(url_for('login'))
+
     if request.method == 'POST':
         cur = mysql.connection.cursor(cursorclass=DictCursor)
-        if "book_name" in request.form:
-            book_name = request.form['book_name']
-            author = request.form['author']
+
+        book_name = request.form['book_name']
+        author = request.form['author']
+
+        # Check if a book with the same name and author already exists
+        cur.execute("SELECT * FROM books WHERE book_name = %s AND author = %s", (book_name, author))
+        if cur.fetchone():
+            flash('This book already exists.', 'warning')
+        else:
+            
             amount = request.form['amount']
-
-
             cur.execute("INSERT INTO books(book_name, author, amount) VALUES (%s, %s, %s)", 
                         (book_name, author, amount))
             mysql.connection.commit()
-
-            cur.close()
-
             flash('Your book has been added.')
 
+        
+        cur.close()
+
+    # Fetch updated list of books to pass to the template
     cur = mysql.connection.cursor(cursorclass=DictCursor)
     cur.execute("SELECT * FROM books")
     books = cur.fetchall()
     cur.close()
-    
-    return redirect(url_for('addUser', books = books))        
+
+    return redirect(url_for('addUser', books=books))
+       
 
 
 
@@ -298,43 +307,54 @@ def addBook():
 @app.route("/addUser", methods=['GET', 'POST'])
 def addUser():
     cur = mysql.connection.cursor(cursorclass=DictCursor)
+
     if not current_user.is_authenticated or not current_user.is_admin():
         flash("Unauthorized access.", "warning")
         return redirect(url_for('login'))
 
-
     if request.method == 'POST':
-        # Handle user data submission
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
         hashed_password = generate_password_hash(password)
-        first_name = request.form["first_name"]
-        second_name = request.form["second_name"]
-        dob = request.form["dob"]
-        address = request.form["address"]
-        photo = request.files["photo"]
+        first_name = request.form.get("first_name", "")
+        second_name = request.form.get("second_name", "")
+        dob = request.form.get("dob", "")
+        address = request.form.get("address", "")
+        photo = request.files.get("photo", None)
 
-        if photo and photo.filename:
-            filename = secure_filename(photo.filename)
-            photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            photo.save(photo_path)
-            photo_filename = os.path.basename(photo_path)
+        # Validate Date of Birth if provided
+        valid_dob = None
+        if dob:
+            try:
+                valid_dob = datetime.strptime(dob, '%Y-%m-%d').date()
+            except ValueError:
+                flash('Incorrect date format for Date of Birth. Please use YYYY-MM-DD format.', 'warning')
+                return redirect(url_for('addUser'))
 
-        try:
+        # Check if the user with the same email already exists
+        cur.execute("SELECT * FROM users WHERE email = %s", [email])
+        if cur.fetchone():
+            flash('This email is already registered. Please use another email.', 'warning')
+        else:
+            photo_filename = None
+            if photo and photo.filename:
+                filename = secure_filename(photo.filename)
+                photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                photo.save(photo_path)
+                photo_filename = os.path.basename(photo_path)
+
             cur.execute("INSERT INTO users(username, password, email, first_name, second_name, dob, address, photo_filename) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", 
-                        (username, hashed_password, email, first_name, second_name, dob, address, photo_filename))
+                        (username, hashed_password, email, first_name, second_name, valid_dob, address, photo_filename))
             mysql.connection.commit()
             flash('User added successfully.')
-        except MySQLdb.IntegrityError:
-            flash('This email is already registered. Please use another email.')
-        
-        
+
     # Fetch updated data from the database to display
     cur.execute("SELECT * FROM users")
     users = cur.fetchall()
     cur.execute("SELECT * FROM books")
     books = cur.fetchall()
+
     cur.close()
 
     return render_template("admin_dashboard.html", users=users, books=books)
