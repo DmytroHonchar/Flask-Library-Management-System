@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
     <title>Add user or book</title>
 </head>
 <body>
@@ -50,13 +51,13 @@
     <form method="post" action="/addBook" enctype="multipart/form-data">
         <div class="oneline1" >
         <label for="book_name">Book Name:</label>
-        <input type="text" name="book_name">
+        <input type="text" name="book_name" required>
     
         <label for="author">Author:</label>
-        <input type="text" name="author">
+        <input type="text" name="author" required>
     
         <label for="amount">Amount:</label>
-        <input type="number" name="amount" min="1">
+        <input type="number" name="amount" min="1" required>
             
         <input type="submit" value="Add Book">
     </div>

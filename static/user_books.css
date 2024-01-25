@@ -71,16 +71,15 @@ a:hover{
     font-weight: bold;
 }
 
+.one{
+    text-align: center;
+}
+
 p{
     font-family: Cinzel;
     color: white;
     text-align: center;
     margin-top: 25px;
-}
-
-
-.one{
-    text-align: center;
 }
 
 /* -----------------------------Font Styles -------------------------------------*/
