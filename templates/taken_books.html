@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>User's books</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='taken_books.css') }}">
+      <!-- Check if the user has books -->
+      <h1>Books in User's Profile:</h1>
+      <div class="top">
+      <a href="{{ url_for('view_user', user_id=user.id) }}">Back to User Details</a>
+    </div>
+
+  {% if books %}
+  
+  
+  <ul>
+      {% for book in books %}
+          <li>{{ book.book_name }} by {{ book.author }} (Quantity: {{ book.quantity }})</li>
+      {% endfor %}
+  </ul>
+{% else %}
+  <p>User does not have any books in their profile.</p>
+{% endif %}
+
+<p>Ban Status: {% if user.is_banned %} Banned {% else %} Not Banned {% endif %}</p>
+
+<div class="line">
+        <!-- Ban User Button -->
+        <form method="post" action="{{ url_for('ban_user', user_id=user.id) }}">
+            <input type="submit" value="Ban This User">
+        </form>
+       
+        <!-- Unban User Button -->
+        <form method="post" action="{{ url_for('unban_user', user_id=user.id) }}">
+            <input type="submit" value="Unban This User">
+        </form>
+      </div>
+
+</body>
+</html>

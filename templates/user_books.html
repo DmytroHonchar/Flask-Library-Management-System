@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>Your Books</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='user_books.css') }}">
+    <h1>Your Book Collection</h1>
+    <div class="one">
+        <a href="{{ url_for('listbooks') }}">Back to the List of books </a>
+    </div>
+    <!-- Check if the user has any books -->
+    {% if books %}
+    <ul>
+        {% for book in books %}
+            <li>
+                {{ book.book_name }} by {{ book.author }} - Quantity: {{ book.quantity }}
+                <!-- Form for removing a book from the profile -->
+                <form method="post" action="{{ url_for('delete_book_from_profile') }}">
+                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                    <input type="number" name="quantity_to_remove" min="1" max="{{ book.quantity }}" value="1">
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You do not have any books in your collection.</p>
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+</body>
+</html>

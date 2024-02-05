@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>Add user or book</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='add_user_book.css') }}">
+    <h1> Add User</h1>
+    <div class="one">
+    <a href="{{ url_for('addUser') }}">Back to Admin Dashboard</a>
+    </div>
+    <form method="post" action="/addUser" enctype="multipart/form-data">
+        <div class="twoelements">
+        <div class="oneline">
+    
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" required>
+
+        <label for="second_name">Second Name:</label>
+        <input type="text" name="second_name">
+    
+        <label for="dob">Date of Birth:</label>
+        <input type="date" name="dob">
+    
+        <label for="address">Address:</label>
+        <input type="text" name="address">
+        </div>
+        <div class="oneline">
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+    
+            <label for="photo">Photo:</label>
+            <input type="file" name="photo">
+
+        </div>
+        </div>
+        <div class="one">
+        <input type="submit" value="Add User">
+    </div>
+    </form>
+    
+    <h2> Add Book</h2>
+    <form method="post" action="/addBook" enctype="multipart/form-data">
+        <div class="oneline1" >
+        <label for="book_name">Book Name:</label>
+        <input type="text" name="book_name" required>
+    
+        <label for="author">Author:</label>
+        <input type="text" name="author" required>
+    
+        <label for="amount">Amount:</label>
+        <input type="number" name="amount" min="1" required>
+            
+        <input type="submit" value="Add Book">
+    </div>
+    </form>
+    
+</body>
+</html>

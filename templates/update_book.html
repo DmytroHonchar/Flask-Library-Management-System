@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>Update book info</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='update_book.css') }}">
+        <!-- If you're an admin, show the forms for updating and deleting book details -->
+        {% if current_user.is_admin() %}
+        <h1> Update Book Information</h1>
+        <div class="one">
+        <a href="{{ url_for('view_book', book_id=book.id) }}">back to View Details</a>
+    </div>
+        <div class="center">
+        <form method="post" action="{{ url_for('update_book', book_id=book.id) }}" enctype="multipart/form-data">
+            <label for="book_name">Book Name:</label>
+            <input type="text" name="book_name" value="{{ book.book_name }}">
+            <label for="author">Author:</label>
+            <input type="text" name="author" value="{{ book.author }}">
+            <label for="amount">Amount:</label>
+            <input type="number" name="amount" min="0" value="{{ book.amount }}">
+            <label for="for_exchange">Available for Exchange:</label>
+            <input type="checkbox" class="custom-checkbox" name="for_exchange" {{ 'checked' if book.for_exchange }}>
+            <input type="submit" value="Update Book">
+        </form>
+    </div>
+        <form method="post" action="{{ url_for('delete_book', book_id=book.id) }}">
+            <input type="submit" class="delete-button" value="Delete This Book">
+        </form>
+        {% endif %}
+        {% with messages = get_flashed_messages(category_filter=["success", "error"]) %}
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>Book Details</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='view_book.css') }}">
+    <h1>Book Details</h1>
+    <div class="twoelements">
+    <a href="{{ url_for('addUser') }}">Back to Admin Dashboard</a>
+    <a href="{{ url_for('edit_book', book_id=book.id) }}">Update book</a>
+    </div>
+    <div class="book_info">
+        <p>Title: {{ book.book_name }}</p>
+        <p>Author: {{ book.author }}</p>
+        <p>Amount: {{ book.amount }}</p>
+        <p>Available for Exchange: {{ 'Yes' if book.for_exchange else 'No' }}</p>
+    </div>
+
+
+<!-- Display users who have this book -->
+<h3>Current Holders of This Book</h3>
+{% if user_books %}
+    <table class="book_info">
+        <tr>
+            <th>User</th>
+            <th>Copies</th>
+        </tr>
+        {% for user_book in user_books %}
+        <tr>
+            <td style="margin-right: 5px;">{{ user_book.username }}</td>
+            <td style="text-align: center;">{{ user_book.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p class="book_info">No users currently have this book.</p>
+{% endif %}
+
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+</body>
+</html>

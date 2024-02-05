@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>Users</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='list_of_users.css') }}">
+    <h1>List of Users</h1>
+    <div class="one">
+        <a href="{{ url_for('addUser') }}">Back to Admin Dashboard</a>
+        </div>
+    {% for user in users %}
+        <div class="list">
+        <p>Name: {{ user.first_name }} {{ user.second_name }}</p>
+        <a href="{{ url_for('view_user', user_id=user.id) }}">View Details</a>
+        </div>
+    {% endfor %}
+
+</body>
+</html>

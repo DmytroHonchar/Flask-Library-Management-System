@@ -1,0 +1,69 @@
+body{
+    background-color: black;
+    color: white;
+    background-image: url(/static/pictures/pexels-josh-hild-4256852.jpg);
+    background-size: cover;
+}
+
+h1 {
+    font-family: Bebas Neue;
+    font-size: 50px;
+    margin: 20px;
+    text-align: center;
+}
+
+.top{
+    text-align: center;
+}
+
+a{
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bebas Neue';
+    width: max-content;
+    font-size: 30px;
+    text-decoration: none;
+    color:white;
+    transition: transform 0.3s ease-in-out;
+}
+
+a:hover{
+    color: rgb(241, 241, 121);
+}
+
+li{
+    font-size: 20px;
+    margin: 15px 0;
+    font-family: Cinzel;
+}
+
+p{
+    font-family: Bebas Neue;
+    font-size: 25px;
+    margin-left: 5px;
+}
+
+input[type="submit"] {
+    font-family: 'Bebas Neue';
+    margin: 30px auto;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    font-size: 20px;
+    width: max-content;
+    transition: background-color 0.8s ease-in-out;
+}
+
+input[type="submit"]:hover{
+    background-color: #ee6e12;
+}
+
+.line{
+    display: flex;
+    flex-direction: row;
+}
+
+form{
+    margin-right: 20px;
+}
+

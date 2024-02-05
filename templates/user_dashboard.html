@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1 class="top">Welcome to your profile, {{ user.username }}!</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="page">
+        <div class="twoelements">
+            <!-- User Photo -->
+            <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) if user.photo_filename else '' }}" alt="Provide your photo" width="300px">
+
+            <!-- User Profile Information -->
+            <div class="profile_info">
+                <p>
+                    {% if user.first_name and user.second_name %}
+                        Name: {{ user.first_name }} {{ user.second_name }}
+                    {% else %}
+                        Name: Provide your name
+                    {% endif %}
+                </p>
+                
+                <p>
+                    {% if user.dob %}
+                        DOB: {{ user.dob.strftime('%d-%m-%Y') }}
+                    {% else %}
+                        DOB: Provide your date of birth
+                    {% endif %}
+                </p>
+                
+                <p>
+                    {% if user.address %}
+                        Address: {{ user.address }}
+                    {% else %}
+                        Address: Provide your address
+                    {% endif %}
+                </p>
+
+                <!-- Navigation Links -->
+                <a href="{{ url_for('edit') }}">Edit profile</a>
+                <a href="{{ url_for('listbooks') }}">List of books</a>
+                
+                {% if admin %}
+                    <a href="{{ url_for('addUser') }}">Admin Dashboard</a>
+                {% endif %}
+
+                <a class="button" href="{{ url_for('logout') }}">Log out</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash Messages Section -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

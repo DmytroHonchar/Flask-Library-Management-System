@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>User Details</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='view_user.css') }}">
+    <div class="top">
+    <h1>User Details</h1>
+    </div>
+    <div class="page">
+    <div class="twoelements">
+    <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) if user.photo_filename else '' }}" alt="User photo" width="300px">
+    <div class="profile_info">
+        <p>Username:</p>
+        <p>{{ user.username }}</p>
+        <p>Email:</p>
+        <p>{{ user.email }}</p>
+        <p>Name:</p>
+        <p>  {% if user.first_name and user.second_name %}
+            {{ user.first_name }} {{ user.second_name }}
+        {% else %}
+            Provide name
+        {% endif %}</p>
+        <p>DOB:</p>
+        <p>{% if user.dob %}
+            {{ user.dob.strftime('%d-%m-%Y') }}
+        {% else %}
+            Provide date of birth
+        {% endif %}</p>
+        <p>Address:</p>
+        <p> {% if user.address %}
+            {{ user.address }}
+        {% else %}
+           Provide address
+        {% endif %}</p>
+       
+   
+    
+    <a href="{{ url_for('LU') }}">Back to List of Users</a>
+    <a href="{{ url_for('Update', user_id=user.id )}}">Update info</a>
+    <a href="{{ url_for('taken_books', user_id=user.id )}}">User's books</a>
+    <a href="{{ url_for('deleting', user_id=user.id )}}">Delete info</a>
+    
+    </div>
+</div>
+</div>
+    <!-- Flash Messages Section -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+</body>
+</html>

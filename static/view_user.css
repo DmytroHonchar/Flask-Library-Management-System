@@ -1,0 +1,79 @@
+body {
+    color: white;
+    background-image: url(/static/pictures/pexels-lisa-fotios-1430796.jpg);
+    background-size: cover;
+    
+}
+.top {
+    text-align: center;
+}
+
+h1 {
+    font-family: Bebas Neue;
+    font-size: 50px;
+    margin: 20px;
+}
+
+.twoelements {
+    display: flex;
+    flex-direction: row;
+}
+
+img {
+    border-radius: 15px;
+    margin-left: 30px;
+    margin-top: 60px;
+    margin-bottom: 70px;
+}
+
+.profile_info {
+    margin-top: 20px;
+    margin-left: 15px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile_info p {
+    font-family: Cinzel;
+    margin: 0%;
+}
+
+.profile_info a {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+/* Navigation Links Styles */
+a {
+    border: none;
+    margin: 5px;
+    border-radius: 15px;
+    font-family: 'Bebas Neue';
+    width: max-content;
+    font-size: 23px;
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    transition: transform 0.3s ease-in-out;
+    color: rgb(241, 241, 121);
+}
+
+/* Page Styles */
+.page {
+    margin-right: 200px;
+    margin-left: 200px;
+    background-image: url(/static/pictures/pexels-lil-artsy-1132577.jpg);
+    border-radius: 20px;
+}
+
+.flash-message{
+    font-family: Cinzel;
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+}

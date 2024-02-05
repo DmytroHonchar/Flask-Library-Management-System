@@ -1,0 +1,42 @@
+body{
+    background-color: black;
+    color: white;
+    background-image: url(/static/pictures/pexels-lisa-fotios-1430796.jpg);
+    background-size: cover;
+    background-repeat:no-repeat;
+}
+
+h1 {
+    font-family: Bebas Neue;
+    font-size: 50px;
+    margin: 20px;
+    text-align: center;
+}
+
+a{
+    border: none;
+    border-radius: 15px;
+    font-family: 'Bebas Neue';
+    width: max-content;
+    font-size: 30px;
+    text-decoration: none;
+    color:white;
+    transition: transform 0.3s ease-in-out;
+}
+
+a:hover{
+    color: rgb(241, 241, 121);
+}
+
+p{  
+    font-size: 25px;
+    font-family: Cinzel;
+}
+
+.one{
+    text-align: center;
+}
+
+.list{
+    margin-left: 20px;
+}
