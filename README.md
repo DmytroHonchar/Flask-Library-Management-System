@@ -163,5 +163,5 @@ The application will start, and you will see output indicating the local develop
 Open a web browser and navigate to the provided address to access the Flask Library Management System.
 
 ## Live Demo
-Experience the Flask Library Management System in action [here](www.mylibrarysystem.co.uk).
+Experience the Flask Library Management System in action [here](https://www.mylibrarysystem.co.uk/).
 
