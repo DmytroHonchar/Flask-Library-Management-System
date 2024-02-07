@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, current_app, abort
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -133,6 +133,16 @@ def login():
             return redirect(url_for('login')) 
 
     return render_template("login.html")
+
+#Route for Secure File Serving
+@app.route('/uploads/<filename>')
+@login_required  # Require the user to be logged in
+def uploaded_file(filename):
+    path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+    if os.path.exists(path):
+        return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    else:
+        abort(404)  # File not found
 
 
 # User dashboard route
