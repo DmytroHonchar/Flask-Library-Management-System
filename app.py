@@ -11,6 +11,7 @@ from flask_mysqldb import MySQL
 from urllib.parse import urlparse
 from datetime import datetime
 import imghdr 
+from functools import wraps
 # Initialize Flask application
 
 app = Flask(__name__)
@@ -71,6 +72,15 @@ def load_user(id):
         return User(id=user_data['id'], role=user_data['role'], is_banned=user_data['is_banned'])
     return None
 
+# Admin required function
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin():
+            flash("Unauthorized access.", "warning")
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Registration route
 @app.route("/registration", methods=["GET", "POST"])
@@ -286,11 +296,8 @@ def delete_photo():
 # Admin-only route for adding a book
 @app.route("/addBook", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def addBook():
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-
     if request.method == 'POST':
         cur = mysql.connection.cursor(cursorclass=DictCursor)
 
@@ -325,12 +332,9 @@ def addBook():
 
 # Admin-only route for adding a user
 @app.route("/addUser", methods=['GET', 'POST'])
+@admin_required
 def addUser():
     cur = mysql.connection.cursor(cursorclass=DictCursor)
-
-    if not current_user.is_authenticated or not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
         username = request.form['username']
@@ -388,12 +392,9 @@ def addUser():
 
 # Admin routes too
 @app.route("/list_of_users", methods=['GET', 'POST'])
+@admin_required
 def LU():
-    cur = mysql.connection.cursor(cursorclass=DictCursor)
-    if not current_user.is_authenticated or not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-    
+    cur = mysql.connection.cursor(cursorclass=DictCursor)    
     cur.execute("SELECT * FROM users")
     users = cur.fetchall()
     cur.close()
@@ -403,11 +404,8 @@ def LU():
 
 
 @app.route("/Update/<int:user_id>", methods=['GET', 'POST'])
+@admin_required
 def Update(user_id):
-    if not current_user.is_authenticated or not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
     # Execute a query to fetch the user data by user_id
@@ -425,11 +423,8 @@ def Update(user_id):
 
 @app.route("/deleting/<int:user_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def deleting(user_id):
-    if not current_user.is_authenticated or not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
     # Execute a query to fetch the user data by user_id
@@ -444,11 +439,8 @@ def deleting(user_id):
 
 # Inside your Flask route for viewing user details
 @app.route("/user/<int:user_id>")
+@admin_required
 def view_user(user_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-    
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
     # Execute a query to fetch the user data by user_id
@@ -475,10 +467,8 @@ def view_user(user_id):
 
 # Admin-only route to update a specific user
 @app.route("/update_user/<int:user_id>", methods=["POST"])
+@admin_required
 def update_user(user_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
     update_data = {}
     fields_to_update = ["first_name", "second_name", "dob", "address", "username", "password", "email"]
@@ -524,10 +514,8 @@ def update_user(user_id):
 
 # Admin-only route to delete a user's photo
 @app.route("/delete_user_photo/<int:user_id>", methods=["POST"])
+@admin_required
 def delete_user_photo(user_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
     # Check if the user has a photo
@@ -557,11 +545,8 @@ def delete_user_photo(user_id):
 # Admin-only route to delete a user
 @app.route("/delete_user/<int:user_id>", methods=["POST"])
 @login_required
+@admin_required
 def delete_user(user_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
     # First, retrieve the user's photo filename before deleting the user record
@@ -613,12 +598,9 @@ def listbooks():
     return render_template("list_book_users.html",user=user_data, available_books=available_books )
 
 @app.route("/list_of_books", methods=['GET', 'POST'])
+@admin_required
 def LB():
-    cur = mysql.connection.cursor(cursorclass=DictCursor)
-    if not current_user.is_authenticated or not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-    
+    cur = mysql.connection.cursor(cursorclass=DictCursor)    
     cur.execute("SELECT * FROM books")
     books = cur.fetchall()
     cur.close()
@@ -628,11 +610,8 @@ def LB():
 
 @app.route("/taken_books/<int:user_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def taken_books(user_id):
-    if not current_user.is_authenticated or not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
     # Execute a query to fetch the user data by user_id
@@ -654,11 +633,8 @@ def taken_books(user_id):
 
 @app.route("/edit_book/<int:book_id>", methods=["GET"])
 @login_required
-def edit_book(book_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-    
+@admin_required
+def edit_book(book_id):    
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM books WHERE id = %s", [book_id])
     book = cur.fetchone()
@@ -672,13 +648,10 @@ def edit_book(book_id):
 
 
 @app.route("/book/<int:book_id>")
+@admin_required
 def view_book(book_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-
-    
+ 
     # Fetch users who have this book and their quantities
     cur.execute("""
         SELECT u.username, ub.quantity
@@ -703,11 +676,8 @@ def view_book(book_id):
 
 @app.route("/update_book/<int:book_id>", methods=["POST"])
 @login_required
-def update_book(book_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-    
+@admin_required
+def update_book(book_id):    
     cur = mysql.connection.cursor(cursorclass=MySQLdb.cursors.DictCursor)
     update_data = {}
     fields_to_update = ["book_name", "author", "amount"]
@@ -890,11 +860,8 @@ def delete_book_from_profile():
 
 @app.route("/ban_user/<int:user_id>", methods=['POST'])
 @login_required
+@admin_required
 def ban_user(user_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-
     cur = mysql.connection.cursor()
     try:
         cur.execute("UPDATE users SET is_banned = TRUE WHERE id = %s", (user_id,))
@@ -910,11 +877,8 @@ def ban_user(user_id):
 
 @app.route("/unban_user/<int:user_id>", methods=['POST'])
 @login_required
+@admin_required
 def unban_user(user_id):
-    if not current_user.is_admin():
-        flash("Unauthorized access.", "warning")
-        return redirect(url_for('login'))
-
     cur = mysql.connection.cursor()
     try:
         cur.execute("UPDATE users SET is_banned = FALSE WHERE id = %s", (user_id,))
