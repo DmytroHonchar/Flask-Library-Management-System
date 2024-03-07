@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, current_app, abort
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory, current_app, abort, session
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -9,7 +9,7 @@ import MySQLdb
 from dotenv import load_dotenv
 from flask_mysqldb import MySQL
 from urllib.parse import urlparse
-from datetime import datetime
+from datetime import datetime, timedelta
 import imghdr 
 from functools import wraps
 # Initialize Flask application
@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 app.secret_key = os.getenv('SECRET_KEY')
 
-
+app.permanent_session_lifetime = timedelta(minutes=30)
 
 # Parse the JawsDB URL from the environment variable
 jawsdb_url = urlparse(os.getenv('JAWSDB_URL'))
@@ -137,6 +137,9 @@ def login():
         if user_data and check_password_hash(user_data['password'], password):
             user = User(user_data['id'])
             login_user(user)
+
+            session.permanent = True
+
             return redirect(url_for('user'))  
         else:
             flash('Invalid email or password', "info")
@@ -899,6 +902,7 @@ def unban_user(user_id):
 @login_required
 def logout():
     logout_user()
+    session.clear()
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
