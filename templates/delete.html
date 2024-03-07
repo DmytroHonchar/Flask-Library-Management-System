@@ -13,11 +13,17 @@
         </div>
         <div class="twoelements" style="margin-top: 50px;">
         <form method="post" action="{{ url_for('delete_user_photo', user_id=user.id) }}">
+            <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
             <input type="submit" value="Delete Photo">
         </form>
     <!-- delete user -->
        
         <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return finalConfirmation();">
+            <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
             <input type="hidden" name="delete_account" value="true">
             <p>Press yes for deleting account</p>
             <input type="radio" id="confirm_yes" name="confirm_delete" value="yes">

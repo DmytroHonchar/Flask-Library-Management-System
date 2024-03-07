@@ -14,7 +14,9 @@
     <img src="{{ url_for('static', filename='pictures/pexels-josh-hild-4256852.jpg') }}" alt="book" width="500px">
 
     <form class="form" method="post" action="/">
-        <!-- Change this input to type="email" and name="email" -->
+        <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <label for="email">Email:</label>
         <input type="email" name="email" required>
         <label for="password">Password:</label>

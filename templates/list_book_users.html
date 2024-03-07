@@ -16,6 +16,9 @@
 
 
 <form method="post" action="{{ url_for('add_book_to_profile') }}">
+    <!-- Include CSRF Token -->
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
     <ul>
         <!-- Loop through available_books list -->
         {% for book in available_books %}

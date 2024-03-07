@@ -12,6 +12,10 @@
        <a href="{{ url_for('user') }}">Back to Dashboard</a>
          </div>
        <form method="post" action="/user" enctype="multipart/form-data">
+
+        <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <div class="twoelements">
             <div class="oneline">
            <label for="first_name">First name:</label>
@@ -51,11 +55,18 @@
    <!-- Form for deleting photo -->
    <div class="twoelements">
    <form method="post" action="/delete_photo">
+
+<!-- Include CSRF Token -->
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
        <input type="submit" value="Delete Current Photo">
    </form>
 
    <!-- Account Deletion Form -->
 <form method="post" action="{{ url_for('user') }}" onsubmit="return finalConfirmation();">
+    <!-- Include CSRF Token -->
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
     <input type="hidden" name="delete_account" value="true">
     <p>Press yes for deleting account</p>
     <div class="line">

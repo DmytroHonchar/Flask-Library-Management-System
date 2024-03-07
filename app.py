@@ -12,9 +12,12 @@ from urllib.parse import urlparse
 from datetime import datetime, timedelta
 import imghdr 
 from functools import wraps
+from flask_wtf.csrf import CSRFProtect
 # Initialize Flask application
 
 app = Flask(__name__)
+
+csrf = CSRFProtect(app)
 
 app.secret_key = os.getenv('SECRET_KEY')
 

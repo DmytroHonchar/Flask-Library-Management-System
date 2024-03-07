@@ -29,11 +29,17 @@
 <div class="line">
         <!-- Ban User Button -->
         <form method="post" action="{{ url_for('ban_user', user_id=user.id) }}">
+            <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
             <input type="submit" value="Ban This User">
         </form>
        
         <!-- Unban User Button -->
         <form method="post" action="{{ url_for('unban_user', user_id=user.id) }}">
+            <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
             <input type="submit" value="Unban This User">
         </form>
       </div>

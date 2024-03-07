@@ -14,6 +14,9 @@
 
     <!-- Registration Form -->
     <form class="form" method="post" action="/registration">
+        <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
 

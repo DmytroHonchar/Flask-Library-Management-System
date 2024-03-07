@@ -11,6 +11,9 @@
         <a href="{{ url_for('view_user', user_id=user.id) }}">Back to View Details</a>
           </div>
     <form method="post" action="{{ url_for('update_user', user_id=user.id) }}" enctype="multipart/form-data">
+        <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
         <div class="twoelements">
             <div class="oneline">
            <label for="first_name">First name:</label>

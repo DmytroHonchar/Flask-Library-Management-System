@@ -11,6 +11,9 @@
     <a href="{{ url_for('addUser') }}">Back to Admin Dashboard</a>
     </div>
     <form method="post" action="/addUser" enctype="multipart/form-data">
+        <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <div class="twoelements">
         <div class="oneline">
     
@@ -49,6 +52,10 @@
     
     <h2> Add Book</h2>
     <form method="post" action="/addBook" enctype="multipart/form-data">
+        
+        <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <div class="oneline1" >
         <label for="book_name">Book Name:</label>
         <input type="text" name="book_name" required>
