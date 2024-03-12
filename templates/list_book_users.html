@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>List of books</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='list_book_users.css') }}">
+  
+
+    <h1 class="top">List of books</h1>
+    <div class="one">
+        <a href="{{ url_for('user') }}">Back to Dashboard</a>
+        <a href="{{ url_for('user_books') }}">View Your Books</a>
+        </div>
+
+
+<form method="post" action="{{ url_for('add_book_to_profile') }}">
+    <!-- Include CSRF Token -->
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
+    <ul>
+        <!-- Loop through available_books list -->
+        {% for book in available_books %}
+            <li>
+                {{ book.book_name }} by {{book.author}}
+                <input type="number" name="quantity_{{ book.id }}" min="1" max="{{ book.amount }}" value="1">
+                <button type="submit" name="book_id" value="{{ book.id }}">Add</button>
+                <br>
+                Available: {{ book.amount }}
+                <br>
+                <!-- Display exchange status -->
+                {% if book.for_exchange %}
+                    <span></span>
+                {% else %}
+                    <span style="color: red;">Book Under Review: Admin Block</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</form>
+
+</body>
+</html>

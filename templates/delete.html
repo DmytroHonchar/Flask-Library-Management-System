@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/book.ico') }}">
+    <title>Delete info</title>
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='edit_profile.css') }}">
+        <!-- Delete photo -->
+        <h2>Delete info</h2>
+        <div class="one">
+        <a href="{{ url_for('view_user', user_id=user.id) }}" >Back to User Details</a>
+        </div>
+        <div class="twoelements" style="margin-top: 50px;">
+        <form method="post" action="{{ url_for('delete_user_photo', user_id=user.id) }}">
+            <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <input type="submit" value="Delete Photo">
+        </form>
+    <!-- delete user -->
+       
+        <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return finalConfirmation();">
+            <!-- Include CSRF Token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+            <input type="hidden" name="delete_account" value="true">
+            <p>Press yes for deleting account</p>
+            <input type="radio" id="confirm_yes" name="confirm_delete" value="yes">
+            <label for="confirm_yes">Yes</label><br>
+            <input type="radio" id="confirm_no" name="confirm_delete" value="no" checked>
+            <label for="confirm_no">No</label><br><br>
+            <button type="submit">Delete this Account</button>
+        </form>
+        
+    </div>
+        <script>
+        function finalConfirmation() {
+            var confirmYes = document.getElementById('confirm_yes').checked;
+            if (confirmYes) {
+                return confirm('Are you really sure you want to delete your account? This action cannot be undone.');
+            }
+            return true;
+        }
+        </script>
+    
+        
+        
+</body>
+</html>
